@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - ByJudge Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="byjudge-main/styles.css">
+    <link rel="icon" type="image/png" href="byjudge-main/logo/logo3.png">
+    <meta name="theme-color" content="#0b1220">
+    <style>
+        .sidebar {
+            transition: transform 0.3s ease;
+        }
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+        .content-expanded {
+            margin-left: 0;
+        }
+        @media (min-width: 768px) {
+            .sidebar-hidden {
+                transform: translateX(0);
+            }
+            .content-expanded {
+                margin-left: 16rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 text-white">
+        <div class="flex items-center justify-between h-16 px-4 bg-gray-800">
+            <div class="flex items-center space-x-2">
+                <img src="byjudge-main/logo/logo.jpg" alt="ByJudge Store Logo" class="w-8 h-8 rounded-lg object-cover" />
+                <span class="text-lg font-bold">Admin Panel</span>
+            </div>
+            <button id="sidebarToggle" class="md:hidden text-gray-400 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <nav class="mt-5 px-2">
+            <a href="#" data-page="dashboard" class="nav-item flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white mb-1">
+                <i class="fas fa-chart-pie mr-3"></i>
+                Dashboard
+            </a>
+            <a href="#" data-page="products" class="nav-item flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white mb-1">
+                <i class="fas fa-box mr-3"></i>
+                Ürünler
+            </a>
+            <a href="#" data-page="orders" class="nav-item flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white mb-1">
+                <i class="fas fa-shopping-cart mr-3"></i>
+                Siparişler
+            </a>
+            <a href="#" data-page="receipts" class="nav-item flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white mb-1">
+                <i class="fas fa-receipt mr-3"></i>
+                Dekontlar
+            </a>
+            <a href="#" data-page="users" class="nav-item flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white mb-1">
+                <i class="fas fa-users mr-3"></i>
+                Kullanıcılar
+            </a>
+        </nav>
+        
+        <div class="absolute bottom-0 w-full p-4 border-t border-gray-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-300" id="adminName">Admin</p>
+                    <p class="text-xs text-gray-500" id="adminEmail">admin@byjudge.com</p>
+                </div>
+                <button id="logoutBtn" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="content-expanded">
+        <!-- Top Bar -->
+        <div class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between h-16 px-4">
+                <div class="flex items-center">
+                    <button id="mobileSidebarToggle" class="md:hidden text-gray-500 hover:text-gray-700 mr-4">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="pageTitle" class="text-xl font-semibold text-gray-900">Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/index.html" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-external-link-alt mr-1"></i>
+                        Siteyi Görüntüle
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Content -->
+        <div class="p-6">
+            <!-- Dashboard Page -->
+            <div id="dashboardPage" class="page-content">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                <i class="fas fa-users text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Toplam Kullanıcı</p>
+                                <p class="text-2xl font-semibold text-gray-900" id="totalUsers">-</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                <i class="fas fa-box text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Toplam Ürün</p>
+                                <p class="text-2xl font-semibold text-gray-900" id="totalProducts">-</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                                <i class="fas fa-shopping-cart text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Toplam Sipariş</p>
+                                <p class="text-2xl font-semibold text-gray-900" id="totalOrders">-</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                                <i class="fas fa-lira-sign text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Toplam Gelir</p>
+                                <p class="text-2xl font-semibold text-gray-900" id="totalRevenue">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Son Siparişler</h3>
+                        <div id="recentOrders" class="space-y-3">
+                            <!-- Recent orders will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Son Kullanıcılar</h3>
+                        <div id="recentUsers" class="space-y-3">
+                            <!-- Recent users will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Page -->
+            <div id="productsPage" class="page-content hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Ürün Yönetimi</h2>
+                    <button id="addProductBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-plus mr-2"></i>
+                        Yeni Ürün
+                    </button>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="p-4 border-b border-gray-200">
+                        <input type="text" id="productSearch" placeholder="Ürün ara..." 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div id="productsList" class="divide-y divide-gray-200">
+                        <!-- Products will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Page -->
+            <div id="ordersPage" class="page-content hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Sipariş Yönetimi</h2>
+                    <div class="flex space-x-2">
+                        <select id="orderStatusFilter" class="px-3 py-2 border border-gray-300 rounded-md">
+                            <option value="">Tüm Durumlar</option>
+                            <option value="pending">Bekleyen</option>
+                            <option value="processing">İşleniyor</option>
+                            <option value="completed">Tamamlandı</option>
+                            <option value="cancelled">İptal Edildi</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="p-4 border-b border-gray-200">
+                        <input type="text" id="orderSearch" placeholder="Sipariş ara..." 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div id="ordersList" class="divide-y divide-gray-200">
+                        <!-- Orders will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Receipts Page -->
+            <div id="receiptsPage" class="page-content hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Dekont Yönetimi</h2>
+                    <div class="flex space-x-2">
+                        <select id="receiptStatusFilter" class="px-3 py-2 border border-gray-300 rounded-md">
+                            <option value="">Tüm Durumlar</option>
+                            <option value="pending">Bekleyen</option>
+                            <option value="verified">Doğrulandı</option>
+                            <option value="rejected">Reddedildi</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="p-4 border-b border-gray-200">
+                        <input type="text" id="receiptSearch" placeholder="Dekont ara..." 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div id="receiptsList" class="divide-y divide-gray-200">
+                        <!-- Receipts will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Page -->
+            <div id="usersPage" class="page-content hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Kullanıcı Yönetimi</h2>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="p-4 border-b border-gray-200">
+                        <input type="text" id="userSearch" placeholder="Kullanıcı ara..." 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div id="usersList" class="divide-y divide-gray-200">
+                        <!-- Users will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg">
+            <div class="flex items-center">
+                <i class="fas fa-spinner fa-spin text-blue-600 mr-3"></i>
+                <span>Yükleniyor...</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Base URL
+        const API_BASE = '/api';
+        
+        // Global variables
+        let currentUser = null;
+        let currentPage = 'dashboard';
+
+        // Initialize admin panel
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkAuth();
+            initializeEventListeners();
+            loadDashboard();
+        });
+
+        // Authentication check
+        async function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            
+            if (!token || !user) {
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/verify`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Invalid token');
+                }
+
+                const result = await response.json();
+                currentUser = result.user;
+
+                if (currentUser.role !== 'admin') {
+                    window.location.href = '/index.html';
+                    return;
+                }
+
+                // Update admin info in sidebar
+                document.getElementById('adminName').textContent = currentUser.username;
+                document.getElementById('adminEmail').textContent = currentUser.email;
+
+            } catch (error) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = '/login';
+            }
+        }
+
+        // Initialize event listeners
+        function initializeEventListeners() {
+            // Sidebar toggle
+            document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
+            document.getElementById('mobileSidebarToggle').addEventListener('click', toggleSidebar);
+
+            // Navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = item.dataset.page;
+                    navigateToPage(page);
+                });
+            });
+
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+
+            // Add product button
+            document.getElementById('addProductBtn').addEventListener('click', () => {
+                showAddProductModal();
+            });
+
+            // Search and filter listeners
+            document.getElementById('productSearch').addEventListener('input', debounce(loadProducts, 300));
+            document.getElementById('orderSearch').addEventListener('input', debounce(loadOrders, 300));
+            document.getElementById('receiptSearch').addEventListener('input', debounce(loadReceipts, 300));
+            document.getElementById('userSearch').addEventListener('input', debounce(loadUsers, 300));
+
+            document.getElementById('orderStatusFilter').addEventListener('change', loadOrders);
+            document.getElementById('receiptStatusFilter').addEventListener('change', loadReceipts);
+        }
+
+        // Navigation
+        function navigateToPage(page) {
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('bg-gray-700', 'text-white');
+                item.classList.add('text-gray-300');
+            });
+            
+            document.querySelector(`[data-page="${page}"]`).classList.remove('text-gray-300');
+            document.querySelector(`[data-page="${page}"]`).classList.add('bg-gray-700', 'text-white');
+
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // Show selected page
+            document.getElementById(`${page}Page`).classList.remove('hidden');
+            
+            // Update page title
+            const titles = {
+                dashboard: 'Dashboard',
+                products: 'Ürün Yönetimi',
+                orders: 'Sipariş Yönetimi',
+                receipts: 'Dekont Yönetimi',
+                users: 'Kullanıcı Yönetimi'
+            };
+            document.getElementById('pageTitle').textContent = titles[page];
+
+            currentPage = page;
+
+            // Load page data
+            switch(page) {
+                case 'dashboard':
+                    loadDashboard();
+                    break;
+                case 'products':
+                    loadProducts();
+                    break;
+                case 'orders':
+                    loadOrders();
+                    break;
+                case 'receipts':
+                    loadReceipts();
+                    break;
+                case 'users':
+                    loadUsers();
+                    break;
+            }
+        }
+
+        // Sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.toggle('sidebar-hidden');
+            mainContent.classList.toggle('content-expanded');
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        }
+
+        // API request helper
+        async function apiRequest(endpoint, options = {}) {
+            const token = localStorage.getItem('token');
+            
+            const defaultOptions = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            };
+
+            const response = await fetch(`${API_BASE}${endpoint}`, {
+                ...defaultOptions,
+                ...options,
+                headers: {
+                    ...defaultOptions.headers,
+                    ...options.headers
+                }
+            });
+
+            if (response.status === 401) {
+                logout();
+                return null;
+            }
+
+            return response;
+        }
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                const response = await apiRequest('/admin/dashboard');
+                if (!response) return;
+
+                const data = await response.json();
+                
+                // Update stats
+                document.getElementById('totalUsers').textContent = data.stats.totalUsers || 0;
+                document.getElementById('totalProducts').textContent = data.stats.totalProducts || 0;
+                document.getElementById('totalOrders').textContent = data.stats.totalOrders || 0;
+                document.getElementById('totalRevenue').textContent = `₺${(data.stats.totalRevenue || 0).toLocaleString()}`;
+
+                // Update recent orders
+                const recentOrdersContainer = document.getElementById('recentOrders');
+                recentOrdersContainer.innerHTML = '';
+                
+                if (data.recentOrders && data.recentOrders.length > 0) {
+                    data.recentOrders.forEach(order => {
+                        const orderElement = createOrderElement(order);
+                        recentOrdersContainer.appendChild(orderElement);
+                    });
+                } else {
+                    recentOrdersContainer.innerHTML = '<p class="text-gray-500 text-center py-4">Henüz sipariş yok</p>';
+                }
+
+                // Update recent users
+                const recentUsersContainer = document.getElementById('recentUsers');
+                recentUsersContainer.innerHTML = '';
+                
+                if (data.recentUsers && data.recentUsers.length > 0) {
+                    data.recentUsers.forEach(user => {
+                        const userElement = createUserElement(user);
+                        recentUsersContainer.appendChild(userElement);
+                    });
+                } else {
+                    recentUsersContainer.innerHTML = '<p class="text-gray-500 text-center py-4">Henüz kullanıcı yok</p>';
+                }
+
+            } catch (error) {
+                console.error('Dashboard yükleme hatası:', error);
+                showNotification('Dashboard verileri yüklenirken hata oluştu', 'error');
+            }
+        }
+
+        // Create order element for dashboard
+        function createOrderElement(order) {
+            const div = document.createElement('div');
+            div.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg';
+            
+            const statusColors = {
+                pending: 'bg-yellow-100 text-yellow-800',
+                processing: 'bg-blue-100 text-blue-800',
+                completed: 'bg-green-100 text-green-800',
+                cancelled: 'bg-red-100 text-red-800'
+            };
+
+            div.innerHTML = `
+                <div>
+                    <p class="font-medium text-gray-900">${order.order_number}</p>
+                    <p class="text-sm text-gray-600">${order.username}</p>
+                </div>
+                <div class="text-right">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[order.status] || 'bg-gray-100 text-gray-800'}">
+                        ${getStatusText(order.status)}
+                    </span>
+                    <p class="text-sm text-gray-600 mt-1">₺${order.total_amount}</p>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // Create user element for dashboard
+        function createUserElement(user) {
+            const div = document.createElement('div');
+            div.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg';
+            
+            div.innerHTML = `
+                <div>
+                    <p class="font-medium text-gray-900">${user.username}</p>
+                    <p class="text-sm text-gray-600">${user.email}</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-600">${new Date(user.created_at).toLocaleDateString('tr-TR')}</p>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // Get status text in Turkish
+        function getStatusText(status) {
+            const statusTexts = {
+                pending: 'Bekleyen',
+                processing: 'İşleniyor',
+                completed: 'Tamamlandı',
+                cancelled: 'İptal Edildi',
+                verified: 'Doğrulandı',
+                rejected: 'Reddedildi'
+            };
+            return statusTexts[status] || status;
+        }
+
+        // Utility functions
+        function showNotification(message, type = 'info') {
+            // Simple notification - you can enhance this
+            alert(message);
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Placeholder functions for other pages
+        function loadProducts() {
+            document.getElementById('productsList').innerHTML = '<p class="p-4 text-center text-gray-500">Ürünler yükleniyor...</p>';
+            // TODO: Implement product loading
+        }
+
+        function loadOrders() {
+            document.getElementById('ordersList').innerHTML = '<p class="p-4 text-center text-gray-500">Siparişler yükleniyor...</p>';
+            // TODO: Implement order loading
+        }
+
+        function loadReceipts() {
+            document.getElementById('receiptsList').innerHTML = '<p class="p-4 text-center text-gray-500">Dekontlar yükleniyor...</p>';
+            // TODO: Implement receipt loading
+        }
+
+        function loadUsers() {
+            document.getElementById('usersList').innerHTML = '<p class="p-4 text-center text-gray-500">Kullanıcılar yükleniyor...</p>';
+            // TODO: Implement user loading
+        }
+
+        function showAddProductModal() {
+            alert('Ürün ekleme modalı - TODO: Implement');
+        }
+    </script>
+</body>
+</html>
