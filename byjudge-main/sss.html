@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sıkça Sorulan Sorular - ByJudge Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="logo/logo3.png">
+    <link rel="apple-touch-icon" href="logo/logo3.png">
+    <link rel="icon" type="image/jpeg" href="logo/logo.jpg">
+    <meta name="theme-color" content="#0b1220">
+    <script>
+        // Apply initial theme ASAP
+        (function() {
+            try {
+                var stored = localStorage.getItem('theme');
+                var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (stored === 'dark' || (!stored && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) {}
+        })();
+    </script>
+    <style>
+        /* SSS Akordiyon ok stili ve daha iyi görünüm için */
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        .accordion-arrow {
+            transition: transform 0.2s ease-in-out;
+        }
+        details[open] > summary .accordion-arrow {
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="flex items-center space-x-2">
+                    <img src="logo/logo.jpg" alt="ByJudge Store Logo" class="w-10 h-10 rounded-lg object-cover" />
+                    <span class="text-xl font-bold text-gray-900">ByJudge Store</span>
+                </a>
+                <div class="flex items-center space-x-3">
+                    <button id="themeToggle" class="text-gray-700 hover:text-blue-600 focus:outline-none p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Tema Değiştir">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path id="sunIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" class="hidden"></path>
+                            <path id="moonIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <nav class="hidden space-x-8">
+                        <div class="relative dropdown">
+                            <a href="/urunler" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Ürünler</a>
+                            <div class="dropdown-menu">
+                                <a href="/urunler#pubg" class="hover:text-blue-600">PUBG Mobile</a>
+                                <a href="/urunler#valorant" class="hover:text-blue-600">Valorant</a>
+                                <a href="/urunler#wolftü" class="hover:text-blue-600">Wolfteam</a>
+                                <a href="/urunler#cs2" class="hover:text-blue-600">CS2</a>
+                                <a href="/urunler#zula" class="hover:text-blue-600">Zula</a>
+                            </div>
+                        </div>
+                        <a href="/sss" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">SSS</a>
+                        <a href="/iletisim" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">İletişim</a>
+                    </nav>
+                    <button id="mobileMenuButton" class="text-gray-700 hover:text-blue-600 focus:outline-none" aria-label="Menüyü Aç/Kapat" aria-expanded="false">
+                        <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                        <svg class="icon-close hidden" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobileMenu" class="mobile-menu-overlay">
+            <div class="mobile-drawer">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="menu-title">Diğer</div>
+                    <button id="mobileMenuClose" class="text-gray-500 hover:text-gray-700" aria-label="Menüyü Kapat">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+                <div class="menu-links">
+                    <a href="/">Ana Sayfa</a>
+                    <a href="/urunler#pubg">PUBG Mobile</a>
+                    <a href="/urunler#valorant">Valorant</a>
+                    <a href="/urunler#wolftü">Wolfteam</a>
+                    <a href="/urunler#cs2">CS2</a>
+                    <a href="/urunler#zula">Zula</a>
+                    <a href="/urunler">Tüm Ürünler</a>
+                    <a href="/iletisim">İletişim</a>
+                    <a href="https://t.me/byjudgeguvence" target="_blank">Güvence Kanalımız</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Sıkça Sorulan Sorular
+                    </h2>
+                    <p class="text-xl text-gray-700 max-w-3xl mx-auto">
+                        Satın alma ve kullanım süreçleriyle ilgili aklınıza takılan yaygın soruların cevaplarını burada bulabilirsiniz.
+                    </p>
+                </div>
+                <div class="max-w-4xl mx-auto space-y-6">
+                    <details class="feature-card bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <summary class="flex justify-between items-center">
+                            <h3 class="text-xl font-bold text-gray-900">Ürünler güvenli mi? Ban riski var mı?</h3>
+                            <span class="accordion-arrow text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                            </span>
+                        </summary>
+                        <p class="text-gray-600 mt-4">Tüm ürünlerimiz, en güncel anti-hile sistemlerine karşı test edilmekte ve düzenli olarak güncellenmektedir. Güvenliğinizi en üst düzeyde tutmak için çalışıyoruz ancak her hile yazılımında olduğu gibi her zaman küçük bir risk mevcuttur. Riski en aza indirmek için talimatlarımıza uymanızı öneririz.</p>
+                    </details>
+                    <details class="feature-card bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <summary class="flex justify-between items-center">
+                            <h3 class="text-xl font-bold text-gray-900">Ödemeyi yaptıktan sonra ürünü nasıl alırım?</h3>
+                            <span class="accordion-arrow text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                            </span>
+                        </summary>
+                        <p class="text-gray-600 mt-4">Ödemeyi tamamladıktan sonra, ödeme dekontu ve sipariş bilgilerinizle birlikte Telegram üzerinden bize ulaştığınızda, ürününüzün indirme linki ve kurulum talimatları en kısa sürede size özel olarak iletilecektir.</p>
+                    </details>
+                    <details class="feature-card bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <summary class="flex justify-between items-center">
+                            <h3 class="text-xl font-bold text-gray-900">Hangi işletim sistemlerini destekliyorsunuz?</h3>
+                            <span class="accordion-arrow text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                            </span>
+                        </summary>
+                        <p class="text-gray-600 mt-4">Yazılımlarımızın çoğu Windows 10 ve Windows 11 işletim sistemlerinde sorunsuz çalışacak şekilde tasarlanmıştır. Belirli bir ürünün sistem gereksinimleri hakkında daha fazla bilgi için Telegram üzerinden bizimle iletişime geçebilirsiniz.</p>
+                    </details>
+                    <details class="feature-card bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <summary class="flex justify-between items-center">
+                            <h3 class="text-xl font-bold text-gray-900">Kurulum sırasında sorun yaşarsam destek alabilir miyim?</h3>
+                            <span class="accordion-arrow text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                            </span>
+                        </summary>
+                        <p class="text-gray-600 mt-4">Evet, kesinlikle. Satın alma sonrası kurulum veya kullanım sırasında yaşayacağınız herhangi bir sorunda 7/24 aktif olan Telegram destek hattımızdan yardım alabilirsiniz. Gerekirse uzaktan bağlantı ile de destek sağlıyoruz.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <img src="logo/logo2.jpg" alt="ByJudge Store Logo" class="w-8 h-8 rounded-lg object-cover" />
+                        <span class="text-xl font-bold">ByJudge Store</span>
+                    </div>
+                    <p class="text-gray-400 mb-4 max-w-md">Oyun deneyiminizi en üst seviyeye çıkarmak için premium dijital ürünler sunuyoruz.</p>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="/urunler#pubg" class="hover:text-white transition-colors">PUBG Mobile</a></li>
+                        <li><a href="/urunler#valorant" class="hover:text-white transition-colors">Valorant</a></li>
+                        <li><a href="/urunler#wolftü" class="hover:text-white transition-colors">Wolfteam</a></li>
+                        <li><a href="/urunler#cs2" class="hover:text-white transition-colors">CS2</a></li>
+                        <li><a href="/urunler#zula" class="hover:text-white transition-colors">Zula</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">İletişim</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="https://t.me/byjudgee" target="_blank" class="flex items-center hover:text-white transition-colors">Telegram Hesabı (@byjudgee)</a></li>
+                        <li><a href="https://t.me/judgehack" target="_blank" class="flex items-center hover:text-white transition-colors">Telegram Kanalı (@judgehack)</a></li>
+                        <li><a href="https://www.instagram.com/byjudge0?igsh=MXY1bXc3YWI0NnJvaQ==" target="_blank" class="flex items-center hover:text-white transition-colors"><i class="fab fa-instagram mr-2"></i> Instagram Hesabı (@byjudge0)</a></li>
+                        <li><a href="https://discord.com/users/853900519516143627" target="_blank" class="flex items-center hover:text-white transition-colors"><i class="fab fa-discord mr-2"></i> Discord Hesabı (byjudge1903)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400 space-y-2">
+                <div><a href="https://t.me/byjudgeguvence" target="_blank" class="inline-flex items-center text-sm text-blue-400 hover:text-blue-300 underline">Güvence Kanalımız</a></div>
+                <p>&copy; 2025 ByJudge Store. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js" defer></script>
+</body>
+</html>

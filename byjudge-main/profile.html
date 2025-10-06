@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - ByJudge Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="logo/logo3.png">
+    <meta name="theme-color" content="#0b1220">
+</head>
+<body class="bg-gray-50">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="flex items-center space-x-2">
+                    <img src="logo/logo.jpg" alt="ByJudge Store Logo" class="w-10 h-10 rounded-lg object-cover" />
+                    <span class="text-xl font-bold text-gray-900">ByJudge Store</span>
+                </a>
+                <div class="flex items-center space-x-3">
+                    <div id="userMenu" class="hidden">
+                        <div class="relative dropdown">
+                            <button class="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors">
+                                <i class="fas fa-user"></i>
+                                <span id="userName">Kullanıcı</span>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="profile.html" id="profileLink" class="hover:text-blue-600 bg-blue-50 text-blue-600">Profil</a>
+                                <a href="orders.html" id="ordersLink" class="hover:text-blue-600">Siparişlerim</a>
+                                <a href="#" id="logoutLink" class="hover:text-blue-600">Çıkış Yap</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="authButtons" class="flex items-center space-x-2">
+                        <a href="/login" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Giriş Yap</a>
+                        <a href="/register" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">Kayıt Ol</a>
+                    </div>
+                    <button id="themeToggle" class="text-gray-700 hover:text-blue-600 focus:outline-none p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Tema Değiştir">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path id="sunIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" class="hidden"></path>
+                            <path id="moonIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Profil</h1>
+            <p class="text-gray-600">Hesap bilgilerinizi yönetin ve güvenlik ayarlarınızı güncelleyin.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Profile Information -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Basic Information -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-semibold text-gray-900">Temel Bilgiler</h2>
+                        <button id="editBasicBtn" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            <i class="fas fa-edit mr-1"></i>
+                            Düzenle
+                        </button>
+                    </div>
+
+                    <form id="basicInfoForm" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Kullanıcı Adı
+                                </label>
+                                <input type="text" id="username" name="username" readonly
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Email
+                                </label>
+                                <input type="email" id="email" name="email" readonly
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="fullName" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Ad Soyad
+                                </label>
+                                <input type="text" id="fullName" name="full_name" readonly
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500">
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Telefon
+                                </label>
+                                <input type="tel" id="phone" name="phone" readonly
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="telegramUsername" class="block text-sm font-medium text-gray-700 mb-2">
+                                Telegram Kullanıcı Adı
+                            </label>
+                            <input type="text" id="telegramUsername" name="telegram_username" readonly
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500">
+                        </div>
+
+                        <div class="flex justify-end space-x-3 hidden" id="basicFormActions">
+                            <button type="button" onclick="cancelBasicEdit()" 
+                                    class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                                İptal
+                            </button>
+                            <button type="submit" id="saveBasicBtn"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50">
+                                <span class="saveBasicText">Kaydet</span>
+                                <i class="fas fa-spinner fa-spin hidden ml-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Change Password -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Şifre Değiştir</h2>
+
+                    <form id="passwordForm" class="space-y-4">
+                        <div>
+                            <label for="currentPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                                Mevcut Şifre
+                            </label>
+                            <input type="password" id="currentPassword" name="current_password" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                                Yeni Şifre
+                            </label>
+                            <input type="password" id="newPassword" name="new_password" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   minlength="6">
+                        </div>
+
+                        <div>
+                            <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                                Yeni Şifre Tekrar
+                            </label>
+                            <input type="password" id="confirmPassword" name="confirm_password" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   minlength="6">
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit" id="changePasswordBtn"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50">
+                                <span class="changePasswordText">Şifre Değiştir</span>
+                                <i class="fas fa-spinner fa-spin hidden ml-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Account Summary -->
+            <div class="space-y-6">
+                <!-- Account Info -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Hesap Bilgileri</h2>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Üyelik Tarihi</span>
+                            <span class="font-medium" id="memberSince">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Toplam Sipariş</span>
+                            <span class="font-medium" id="totalOrders">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Hesap Durumu</span>
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800" id="accountStatus">
+                                Aktif
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Hızlı İşlemler</h2>
+                    
+                    <div class="space-y-3">
+                        <a href="orders.html" class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-shopping-cart text-blue-600 mr-3"></i>
+                            <span class="text-gray-900">Siparişlerim</span>
+                        </a>
+                        
+                        <a href="urunler.html" class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-box text-blue-600 mr-3"></i>
+                            <span class="text-gray-900">Ürünleri İncele</span>
+                        </a>
+                        
+                        <a href="https://t.me/byjudgee" target="_blank" class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                            <i class="fab fa-telegram text-blue-600 mr-3"></i>
+                            <span class="text-gray-900">Destek</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <div class="bg-white rounded-lg shadow-sm border border-red-200 p-6">
+                    <h2 class="text-xl font-semibold text-red-900 mb-4">Tehlikeli Bölge</h2>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Bu işlemler geri alınamaz. Lütfen dikkatli olun.
+                    </p>
+                    <button onclick="logout()" 
+                            class="w-full px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        Çıkış Yap
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="messageContainer" class="fixed top-4 right-4 z-50 hidden">
+        <div id="messageContent" class="p-4 rounded-lg shadow-lg">
+            <div class="flex items-center">
+                <i id="messageIcon" class="mr-3"></i>
+                <span id="messageText"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Base URL
+        const API_BASE = '/api';
+        
+        // Global variables
+        let currentUser = null;
+        let isEditingBasic = false;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            checkUserAuth();
+            initializeEventListeners();
+        });
+
+        // Check if user is authenticated
+        async function checkUserAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            
+            if (!token || !user) {
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/verify`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Invalid token');
+                }
+
+                const result = await response.json();
+                currentUser = result.user;
+                showUserMenu();
+                loadProfile();
+
+            } catch (error) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = '/login';
+            }
+        }
+
+        // Show user menu
+        function showUserMenu() {
+            document.getElementById('authButtons').classList.add('hidden');
+            document.getElementById('userMenu').classList.remove('hidden');
+            document.getElementById('userName').textContent = currentUser.username;
+        }
+
+        // Initialize event listeners
+        function initializeEventListeners() {
+            // Edit basic info button
+            document.getElementById('editBasicBtn').addEventListener('click', enableBasicEdit);
+
+            // Basic info form
+            document.getElementById('basicInfoForm').addEventListener('submit', handleBasicInfoUpdate);
+
+            // Password form
+            document.getElementById('passwordForm').addEventListener('submit', handlePasswordChange);
+
+            // Logout
+            document.getElementById('logoutLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                logout();
+            });
+        }
+
+        // Load profile data
+        async function loadProfile() {
+            try {
+                const response = await fetch(`${API_BASE}/auth/profile`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const user = data.user;
+                    
+                    // Fill form fields
+                    document.getElementById('username').value = user.username;
+                    document.getElementById('email').value = user.email;
+                    document.getElementById('fullName').value = user.full_name || '';
+                    document.getElementById('phone').value = user.phone || '';
+                    document.getElementById('telegramUsername').value = user.telegram_username || '';
+
+                    // Update account summary
+                    document.getElementById('memberSince').textContent = new Date(user.created_at).toLocaleDateString('tr-TR');
+                    
+                    // Load order count
+                    loadOrderCount();
+                }
+
+            } catch (error) {
+                console.error('Profil yükleme hatası:', error);
+                showMessage('Profil bilgileri yüklenirken hata oluştu', 'error');
+            }
+        }
+
+        // Load order count
+        async function loadOrderCount() {
+            try {
+                const response = await fetch(`${API_BASE}/orders/my-orders`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('totalOrders').textContent = data.pagination?.total || 0;
+                }
+
+            } catch (error) {
+                console.error('Sipariş sayısı yükleme hatası:', error);
+            }
+        }
+
+        // Enable basic info editing
+        function enableBasicEdit() {
+            isEditingBasic = true;
+            
+            // Enable form fields
+            const fields = ['fullName', 'phone', 'telegramUsername'];
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                field.readOnly = false;
+                field.classList.remove('bg-gray-50', 'text-gray-500');
+                field.classList.add('bg-white');
+            });
+
+            // Show action buttons
+            document.getElementById('basicFormActions').classList.remove('hidden');
+            
+            // Hide edit button
+            document.getElementById('editBasicBtn').classList.add('hidden');
+        }
+
+        // Cancel basic edit
+        function cancelBasicEdit() {
+            isEditingBasic = false;
+            
+            // Disable form fields
+            const fields = ['fullName', 'phone', 'telegramUsername'];
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                field.readOnly = true;
+                field.classList.add('bg-gray-50', 'text-gray-500');
+                field.classList.remove('bg-white');
+            });
+
+            // Hide action buttons
+            document.getElementById('basicFormActions').classList.add('hidden');
+            
+            // Show edit button
+            document.getElementById('editBasicBtn').classList.remove('hidden');
+            
+            // Reload profile data to reset form
+            loadProfile();
+        }
+
+        // Handle basic info update
+        async function handleBasicInfoUpdate(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const data = {
+                full_name: formData.get('full_name'),
+                phone: formData.get('phone'),
+                telegram_username: formData.get('telegram_username')
+            };
+
+            const saveBtn = document.getElementById('saveBasicBtn');
+            const saveText = saveBtn.querySelector('.saveBasicText');
+            const spinner = saveBtn.querySelector('i');
+
+            // Set loading state
+            saveBtn.disabled = true;
+            spinner.classList.remove('hidden');
+            saveText.textContent = 'Kaydediliyor...';
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    showMessage('Profil bilgileri güncellendi', 'success');
+                    cancelBasicEdit();
+                } else {
+                    const error = await response.json();
+                    showMessage(error.error || 'Güncelleme başarısız', 'error');
+                }
+
+            } catch (error) {
+                console.error('Profil güncelleme hatası:', error);
+                showMessage('Güncelleme sırasında hata oluştu', 'error');
+            } finally {
+                // Reset loading state
+                saveBtn.disabled = false;
+                spinner.classList.add('hidden');
+                saveText.textContent = 'Kaydet';
+            }
+        }
+
+        // Handle password change
+        async function handlePasswordChange(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const newPassword = formData.get('new_password');
+            const confirmPassword = formData.get('confirm_password');
+
+            if (newPassword !== confirmPassword) {
+                showMessage('Yeni şifreler eşleşmiyor', 'error');
+                return;
+            }
+
+            const changeBtn = document.getElementById('changePasswordBtn');
+            const changeText = changeBtn.querySelector('.changePasswordText');
+            const spinner = changeBtn.querySelector('i');
+
+            // Set loading state
+            changeBtn.disabled = true;
+            spinner.classList.remove('hidden');
+            changeText.textContent = 'Değiştiriliyor...';
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/change-password`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        current_password: formData.get('current_password'),
+                        new_password: newPassword
+                    })
+                });
+
+                if (response.ok) {
+                    showMessage('Şifre başarıyla değiştirildi', 'success');
+                    e.target.reset();
+                } else {
+                    const error = await response.json();
+                    showMessage(error.error || 'Şifre değiştirme başarısız', 'error');
+                }
+
+            } catch (error) {
+                console.error('Şifre değiştirme hatası:', error);
+                showMessage('Şifre değiştirme sırasında hata oluştu', 'error');
+            } finally {
+                // Reset loading state
+                changeBtn.disabled = false;
+                spinner.classList.add('hidden');
+                changeText.textContent = 'Şifre Değiştir';
+            }
+        }
+
+        // Show message
+        function showMessage(text, type) {
+            const container = document.getElementById('messageContainer');
+            const content = document.getElementById('messageContent');
+            const icon = document.getElementById('messageIcon');
+            const textElement = document.getElementById('messageText');
+
+            // Set message text
+            textElement.textContent = text;
+
+            // Set message type
+            if (type === 'success') {
+                content.className = 'p-4 rounded-lg shadow-lg bg-green-100 text-green-800 border border-green-200';
+                icon.className = 'fas fa-check-circle mr-3 text-green-600';
+            } else if (type === 'error') {
+                content.className = 'p-4 rounded-lg shadow-lg bg-red-100 text-red-800 border border-red-200';
+                icon.className = 'fas fa-exclamation-circle mr-3 text-red-600';
+            } else {
+                content.className = 'p-4 rounded-lg shadow-lg bg-blue-100 text-blue-800 border border-blue-200';
+                icon.className = 'fas fa-info-circle mr-3 text-blue-600';
+            }
+
+            // Show message
+            container.classList.remove('hidden');
+
+            // Hide after 5 seconds
+            setTimeout(() => {
+                container.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+                window.location.href = '/login';
+        }
+    </script>
+</body>
+</html>

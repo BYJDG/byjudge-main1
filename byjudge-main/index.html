@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByJudge Store - Dijital Ürün Satın Al</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="logo/logo3.png">
+    <link rel="apple-touch-icon" href="logo/logo3.png">
+    <link rel="icon" type="image/jpeg" href="logo/logo.jpg">
+    <meta name="theme-color" content="#0b1220">
+    <script>
+        // Apply initial theme ASAP
+        (function() {
+            try {
+                var stored = localStorage.getItem('theme');
+                var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (stored === 'dark' || (!stored && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) {}
+        })();
+    </script>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="flex items-center space-x-2">
+                    <img src="logo/logo.jpg" alt="ByJudge Store Logo" class="w-10 h-10 rounded-lg object-cover" />
+                    <span class="text-xl font-bold text-gray-900">ByJudge Store</span>
+                </a>
+                <div class="flex items-center space-x-3">
+                    <div id="userMenu" class="hidden">
+                        <div class="relative dropdown">
+                            <button class="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors">
+                                <i class="fas fa-user"></i>
+                                <span id="userName">Kullanıcı</span>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#" id="profileLink" class="hover:text-blue-600">Profil</a>
+                                <a href="#" id="ordersLink" class="hover:text-blue-600">Siparişlerim</a>
+                                <a href="#" id="logoutLink" class="hover:text-blue-600">Çıkış Yap</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="authButtons" class="flex items-center space-x-2">
+                        <a href="auth-static.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Giriş Yap</a>
+                        <a href="auth-static.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">Kayıt Ol</a>
+                    </div>
+                    <button id="themeToggle" class="text-gray-700 hover:text-blue-600 focus:outline-none p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Tema Değiştir">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path id="sunIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" class="hidden"></path>
+                            <path id="moonIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <nav class="hidden space-x-8">
+                        <div class="relative dropdown">
+                            <a href="/urunler" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Ürünler</a>
+                            <div class="dropdown-menu">
+                                <a href="/urunler#pubg" class="hover:text-blue-600">PUBG Mobile</a>
+                                <a href="/urunler#valorant" class="hover:text-blue-600">Valorant</a>
+                                <a href="/urunler#wolftü" class="hover:text-blue-600">Wolfteam</a>
+                                <a href="/urunler#cs2" class="hover:text-blue-600">CS2</a>
+                                <a href="/urunler#zula" class="hover:text-blue-600">Zula</a>
+                            </div>
+                        </div>
+                        <a href="/sss" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">SSS</a>
+                        <a href="/iletisim" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">İletişim</a>
+                    </nav>
+                    <button id="mobileMenuButton" class="text-gray-700 hover:text-blue-600 focus:outline-none" aria-label="Menüyü Aç/Kapat" aria-expanded="false">
+                        <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                        <svg class="icon-close hidden" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobileMenu" class="mobile-menu-overlay">
+            <div class="mobile-drawer">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="menu-title">Ürünler</div>
+                    <button id="mobileMenuClose" class="text-gray-500 hover:text-gray-700" aria-label="Menüyü Kapat">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="menu-links">
+                    <a href="/urunler#pubg" class="hover:text-blue-600">PUBG Mobile</a>
+                    <a href="/urunler#valorant">Valorant</a>
+                    <a href="/urunler#wolftü">Wolfteam</a>
+                    <a href="/urunler#cs2">CS2</a>
+                    <a href="/urunler#zula">Zula</a>
+                </div>
+                <div class="menu-title" style="margin-top:14px;">Diğer</div>
+                <div class="menu-links">
+                    <a href="/sss">Sıkça Sorulan Sorular</a>
+                    <a href="/iletisim">İletişim</a>
+                    <a href="https://t.me/byjudgeguvence" target="_blank">Güvence Kanalımız</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero-section hero-with-image">
+        <div class="hero-bg-pattern"></div>
+        <div class="hero-content">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                Oyun Deneyiminizi Üst Seviyeye Taşıyın
+            </h1>
+            <p class="text-xl text-white opacity-90 mb-8 max-w-2xl mx-auto">
+                ByJudge Store, oyun severler için en güncel ve güvenilir dijital ürünleri sunar. 
+                Valorant, CS2, Zula ve Wolftü için premium çözümlerle rekabette öne geçin.
+            </p>
+            <div class="mt-2">
+                <a href="https://t.me/byjudgeguvence" target="_blank" class="inline-flex items-center text-sm bg-blue-50 text-blue-700 px-3 py-1 rounded-full border border-blue-200 hover:bg-blue-100">Güvence Kanalımız</a>
+            </div>
+            <div class="mt-8">
+                 <a href="/urunler" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-lg">
+                    Ürünleri İncele
+                 </a>
+                <br> <br>
+                     <a href="/sss" class="bg-gray-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-600 transition-colors text-lg w-full sm:w-auto">
+        SSS
+    </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Neden ByJudge Store?
+                </h2>
+                <div class="max-w-3xl mx-auto space-y-3">
+                    <p class="text-xl text-gray-700">
+                        Müşteri memnuniyeti her zaman en üst düzeyde tutulur. Satın alma öncesi ve sonrası
+                        hızlı, şeffaf ve çözüm odaklı destek sunarız.
+                    </p>
+                    <p class="text-base text-gray-600">
+                        Güven için ayrı bir doğrulama kanalımız da var. 
+                        <a href="https://t.me/byjudgeguvence" target="_blank" class="text-blue-600 font-semibold underline">Güvence Kanalımız</a>
+                    </p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card bg-gray-50 rounded-xl p-6 border border-gray-200">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-6 text-blue-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Güvenlik</h3>
+                    <p class="text-gray-600">Tüm ürünlerimiz güvenlik testlerinden geçmiştir. Hesap güvenliğiniz bizim için önceliklidir.</p>
+                </div>
+                <div class="feature-card bg-gray-50 rounded-xl p-6 border border-gray-200">
+                    <div class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-6 text-purple-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polyline></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Hız</h3>
+                    <p class="text-gray-600">Satın alma işleminden sonra ürünleriniz anında teslim edilir. Bekleme süresi yok!</p>
+                </div>
+                <div class="feature-card bg-gray-50 rounded-xl p-6 border border-gray-200">
+                    <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-6 text-green-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a9 9 0 0118 0v4a3 3 0 01-3 3h-1"></path><path d="M7 17H6a3 3 0 01-3-3v-4"></path><rect x="9" y="17" width="6" height="3" rx="1"></rect></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Destek</h3>
+                    <p class="text-gray-600">7/24 aktif müşteri desteği ile her türlü sorunuzda yanınızdayız.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <img src="logo/logo2.jpg" alt="ByJudge Store Logo" class="w-8 h-8 rounded-lg object-cover" />
+                        <span class="text-xl font-bold">ByJudge Store</span>
+                    </div>
+                    <p class="text-gray-400 mb-4 max-w-md">Oyun deneyiminizi en üst seviyeye çıkarmak için premium dijital ürünler sunuyoruz.</p>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="/urunler#pubg" class="hover:text-white transition-colors">PUBG Mobile</a></li>
+                        <li><a href="/urunler#valorant" class="hover:text-white transition-colors">Valorant</a></li>
+                        <li><a href="/urunler#wolftü" class="hover:text-white transition-colors">Wolfteam</a></li>
+                        <li><a href="/urunler#cs2" class="hover:text-white transition-colors">CS2</a></li>
+                        <li><a href="/urunler#zula" class="hover:text-white transition-colors">Zula</a></li>
+                    </ul>
+                </div>
+                <div>
+        <h3 class="text-lg font-semibold mb-4">SSS&güvence</h3>
+        <ul class="space-y-2 text-gray-400">
+            <li><a href="/sss" class="flex items-center hover:text-white transition-colors">Sıkça Sorulan Sorular</a></li>
+            <li><a href="https://t.me/byjudgeguvence" target="_blank" class="flex items-center hover:text-white transition-colors">Güvence Kanalımız</a></li>
+        </ul>
+    </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">İletişim</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="https://t.me/byjudgee" target="_blank" class="flex items-center hover:text-white transition-colors"><i class="fab fa-telegram-plane mr-2"></i> Telegram Hesabı (@byjudgee)</a></li>
+                        <li><a href="https://t.me/judgehack" target="_blank" class="flex items-center hover:text-white transition-colors"><i class="fab fa-telegram mr-2"></i> Telegram Kanalı (@judgehack)</a></li>
+                        <li><a href="https://www.instagram.com/byjudge0?igsh=MXY1bXc3YWI0NnJvaQ==" target="_blank" class="flex items-center hover:text-white transition-colors"><i class="fab fa-instagram mr-2"></i> Instagram Hesabı (@byjudge0)</a></li>
+                        <li><a href="https://discord.com/users/853900519516143627" target="_blank" class="flex items-center hover:text-white transition-colors"><i class="fab fa-discord mr-2"></i> Discord Hesabı (byjudge1903)</a></li>
+                        <li><a href="https://wa.me/message/EOQCSAYS2MQWB1" target="_blank" class="flex items-center hover:text-white transition-colors">WhatsApp Hesabı</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400 space-y-2">
+                <div><a href="https://t.me/byjudgeguvence" target="_blank" class="inline-flex items-center text-sm text-blue-400 hover:text-blue-300 underline">Güvence Kanalımız</a></div>
+                <p>&copy; 2025 ByJudge Store. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js" defer></script>
+    <script>
+        // API Base URL
+        const API_BASE = '/api';
+        
+        // User authentication state
+        let currentUser = null;
+
+        // Initialize user state
+        document.addEventListener('DOMContentLoaded', () => {
+            checkUserAuth();
+        });
+
+        // Check if user is authenticated (Demo Mode)
+        async function checkUserAuth() {
+            const user = localStorage.getItem('user');
+            
+            if (!user) {
+                showAuthButtons();
+                return;
+            }
+
+            try {
+                const userData = JSON.parse(user);
+                currentUser = userData;
+                showUserMenu();
+                
+                // If user is admin, add admin link
+                if (currentUser.role === 'admin') {
+                    const userMenu = document.querySelector('#userMenu .dropdown-menu');
+                    const adminLink = document.createElement('a');
+                    adminLink.href = 'admin-demo.html';
+                    adminLink.className = 'hover:text-blue-600';
+                    adminLink.innerHTML = '<i class="fas fa-cog mr-2"></i>Admin Panel';
+                    userMenu.insertBefore(adminLink, userMenu.firstChild);
+                }
+
+            } catch (error) {
+                localStorage.removeItem('user');
+                showAuthButtons();
+            }
+        }
+
+        // Show authentication buttons
+        function showAuthButtons() {
+            document.getElementById('authButtons').classList.remove('hidden');
+            document.getElementById('userMenu').classList.add('hidden');
+        }
+
+        // Show user menu
+        function showUserMenu() {
+            document.getElementById('authButtons').classList.add('hidden');
+            document.getElementById('userMenu').classList.remove('hidden');
+            document.getElementById('userName').textContent = currentUser.username;
+        }
+
+        // Logout function
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#logoutLink')) {
+                e.preventDefault();
+                logout();
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('user');
+            currentUser = null;
+            showAuthButtons();
+            window.location.reload();
+        }
+
+        // Enhanced payment function with order creation
+        async function showPayment(product, price) {
+            const user = localStorage.getItem('user');
+            if (!user) {
+                alert('Sipariş verebilmek için giriş yapmalısınız.');
+                window.location.href = 'auth-static.html';
+                return;
+            }
+
+            selectedProduct = product;
+            selectedPrice = price;
+            document.getElementById('productInfo').innerHTML = `
+                <strong>Ürün:</strong> ${product} (${price})
+            `;
+            document.getElementById('paymentModal').style.display = 'block';
+        }
+
+        // Enhanced payment confirmation with order creation
+        async function handlePaymentConfirmation() {
+            const user = localStorage.getItem('user');
+            if (!user) {
+                alert('Sipariş verebilmek için giriş yapmalısınız.');
+                return;
+            }
+
+            // Demo mode - simulate order creation
+            const userData = JSON.parse(user);
+            const orderNumber = 'ORD-' + Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            
+            alert(`Demo Modu: Sipariş oluşturuldu!\nSipariş No: ${orderNumber}\nÜrün: ${selectedProduct}\nTutar: ${selectedPrice}\n\nGerçek sistemde bu bilgiler veritabanına kaydedilecek ve dekont yükleme sistemi aktif olacak.`);
+            
+            closePayment();
+            window.open('https://t.me/byjudgee', '_blank');
+        }
+
+        // Helper function to find product ID
+        async function findProductId(productName) {
+            try {
+                const response = await fetch(`${API_BASE}/products`);
+                if (!response.ok) return null;
+                
+                const data = await response.json();
+                const product = data.products.find(p => p.name.includes(productName) || productName.includes(p.name));
+                return product ? product.id : null;
+            } catch (error) {
+                console.error('Ürün arama hatası:', error);
+                return null;
+            }
+        }
+
+        // Override the original payment functions
+        window.showPayment = showPayment;
+        window.handlePaymentConfirmation = handlePaymentConfirmation;
+    </script>
+</body>
+</html>

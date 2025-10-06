@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürünler - ByJudge Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="logo/logo3.png">
+    <link rel="apple-touch-icon" href="logo/logo3.png">
+    <link rel="icon" type="image/jpeg" href="logo/logo.jpg">
+    <meta name="theme-color" content="#0b1220">
+    <script>
+        // Apply initial theme ASAP
+        (function() {
+            try {
+                var stored = localStorage.getItem('theme');
+                var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (stored === 'dark' || (!stored && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) {}
+        })();
+    </script>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="flex items-center space-x-2">
+                    <img src="logo/logo.jpg" alt="ByJudge Store Logo" class="w-10 h-10 rounded-lg object-cover" />
+                    <span class="text-xl font-bold text-gray-900">ByJudge Store</span>
+                </a>
+                <div class="flex items-center space-x-3">
+                    <div id="userMenu" class="hidden">
+                        <div class="relative dropdown">
+                            <button class="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors">
+                                <i class="fas fa-user"></i>
+                                <span id="userName">Kullanıcı</span>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#" id="profileLink" class="hover:text-blue-600">Profil</a>
+                                <a href="#" id="ordersLink" class="hover:text-blue-600">Siparişlerim</a>
+                                <a href="#" id="logoutLink" class="hover:text-blue-600">Çıkış Yap</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="authButtons" class="flex items-center space-x-2">
+                        <a href="/login" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Giriş Yap</a>
+                        <a href="/register" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">Kayıt Ol</a>
+                    </div>
+                    <button id="themeToggle" class="text-gray-700 hover:text-blue-600 focus:outline-none p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Tema Değiştir">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path id="sunIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" class="hidden"></path>
+                            <path id="moonIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <nav class="hidden space-x-8">
+                        <a href="/urunler" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Ürünler</a>
+                        <a href="/sss" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">SSS</a>
+                        <a href="/iletisim" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">İletişim</a>
+                    </nav>
+                    <button id="mobileMenuButton" class="text-gray-700 hover:text-blue-600 focus:outline-none" aria-label="Menüyü Aç/Kapat" aria-expanded="false">
+                        <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                        <svg class="icon-close hidden" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobileMenu" class="mobile-menu-overlay">
+            <div class="mobile-drawer">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="menu-title">Diğer</div>
+                    <button id="mobileMenuClose" class="text-gray-500 hover:text-gray-" aria-label="Menüyü Kapat">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="menu-links">
+                    <a href="/">Ana Sayfa</a>
+                    <a href="#pubg">PUBG Mobile</a>
+                    <a href="#valorant">Valorant</a>
+                    <a href="#wolftü">Wolfteam</a>
+                    <a href="#cs2">CS2</a>
+                    <a href="#zula">Zula</a>
+                    <a href="/sss">Sıkça Sorulan Sorular</a>
+                    <a href="https://t.me/byjudgeguvence" target="_blank">Güvence Kanalımız</a>
+                    <a href="/iletisim">İletişim</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="pubg" class="category-section bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="category-header">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">PUBG Mobile Ürünleri</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">PUBG Mobile'da rakiplerinize üstünlük sağlayın</p>
+            <br>
+            <h1 style="color: red;">(bu hileler emulatör yani bilgisayar kullanıcıları içindir! eğer ios veya android kullanıcısysanız farklı hile almanız gerekiyor iletişime geçmeniz yeterli)</h1>
+        </div>
+        <div class="space-y-8">
+            <!-- PUBG Mobile Dragon Cheats -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-2xl font-bold text-gray-900">PUBG Mobile Dragon Cheats</h3>
+                        <span class="text-green-500 text-sm font-semibold animate-pulse">UNDETECTED/GÜNCEL</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <img src="/pubg/pubg7.png" class="w-full h-32 object-cover rounded-lg mb-3">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Haftalık</h4>
+                        <p class="text-gray-600 mb-3">Tam erişim, 7 gün</p>
+                        <div class="flex flex-col space-y-2 mb-3">
+                            <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-blue-600">350₺</span>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('PUBG Mobile Premium (Haftalık)', '350₺')">Satın Al</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <img src="/pubg/pubg30.png" class="w-full h-32 object-cover rounded-lg mb-3">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Aylık</h4>
+                        <p class="text-gray-600 mb-3">Tam erişim, 30 gün</p>
+                        <div class="flex flex-col space-y-2 mb-3">
+                            <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-blue-600">700₺</span>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('PUBG Mobile Premium (Aylık)', '700₺')">Satın Al</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PUBG Mobile Bypass -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-2xl font-bold text-gray-900">PUBG Mobile Bypass</h3>
+                        <span class="text-green-500 text-sm font-semibold animate-pulse">UNDETECTED/GÜNCEL</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <img src="/pubg/pubg7.png" class="w-full h-32 object-cover rounded-lg mb-3">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Haftalık</h4>
+                        <p class="text-gray-600 mb-3">Tam erişim, 7 gün</p>
+                        <div class="flex flex-col space-y-2 mb-3">
+                            <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            <button class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors" onclick="showBypassFeatures()">Farkları Nedir?</button>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-blue-600">600₺</span>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('PUBG Mobile Bypass (Haftalık)', '350₺')">Satın Al</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <img src="/pubg/pubg30.png" class="w-full h-32 object-cover rounded-lg mb-3">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Aylık</h4>
+                        <p class="text-gray-600 mb-3">Tam erişim, 30 gün</p>
+                        <div class="flex flex-col space-y-2 mb-3">
+                            <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            <button class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors" onclick="showBypassFeatures()">Farkları Nedir?</button>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-blue-600">1200₺</span>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('PUBG Mobile Bypass (Aylık)', '700₺')">Satın Al</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section id="valorant" class="category-section bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="category-header">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Valorant Ürünleri
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    En iyi Valorant deneyimi için özel olarak tasarlanmış ürünler
+                </p>
+                <p style="color: red;">
+                    satıcının önerisi: TheAlpha serisi
+                </p>
+            </div>
+             <div class="space-y-8">
+                <!-- Valorant External -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-2xl font-bold text-gray-900">Valorant External</h3>
+                            <span class="text-green-500 text-sm font-semibold animate-pulse">UNDETECTED/GÜNCEL</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/valorant/1day.png" alt="Valorant External Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">1 Gün</h4>
+                            <p class="text-gray-600 mb-3">7$ (280₺)</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">7$ (280₺)</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('1 Day External', '7$', '280₺')">Satın Al</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/valorant/3day.png" alt="Valorant External Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">3 Gün</h4>
+                            <p class="text-gray-600 mb-3">15$ (600₺)</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">15$ (600₺)</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('3 Days External', '15$', '600₺')">Satın Al</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/valorant/weekly.png" alt="Valorant External Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Haftalık</h4>
+                            <p class="text-gray-600 mb-3">25$ (1000₺)</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">25$ (1000₺)</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Weekly External', '25$', '1000₺')">Satın Al</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/valorant/monthly.png" alt="Valorant External Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Aylık</h4>
+                            <p class="text-gray-600 mb-3">50$ (2000₺)</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">50$ (2000₺)</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Monthly External', '50$', '2000₺')">Satın Al</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/valorant/lifetime.png" alt="Valorant External Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Sınırsız</h4>
+                            <p class="text-gray-600 mb-3">115$ (4600₺)</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">115$ (4600₺)</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Unlimited External', '115$', '4600₺')">Satın Al</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Valorant TheAlpha -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-2xl font-bold text-gray-900">Valorant TheAlpha</h3>
+                            <span class="text-green-500 text-sm font-semibold animate-pulse">UNDETECTED/GÜNCEL</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/valorant/3day.png" alt="Valorant TheAlpha Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">3 Gün</h4>
+                            <p class="text-gray-600 mb-3">15$ (600₺)</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">15$ (600₺)</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Valorant TheAlpha (3 Gün)', '15$', '600₺')">Satın Al</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/valorant/weekly.png" alt="Valorant TheAlpha Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Haftalık</h4>
+                            <p class="text-gray-600 mb-3">25$ (1000₺)</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">25$ (1000₺)</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Valorant TheAlpha (Haftalık)', '25$', '1000₺')">Satın Al</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/valorant/monthly.png" alt="Valorant TheAlpha Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Aylık</h4>
+                            <p class="text-gray-600 mb-3">50$ (2000₺)</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">50$ (2000₺)</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Valorant TheAlpha (Aylık)', '50$', '2000₺')">Satın Al</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="wolftü" class="category-section bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="category-header">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Wolftü Premium Ürünleri</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Wolftü'de üstün performans için premium çözümler</p>
+            </div>
+            <div class="space-y-8">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-2xl font-bold text-gray-900">Wolftü Premium</h3>
+                            <span class="text-green-500 text-sm font-semibold animate-pulse">UNDETECTED/GÜNCEL</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="bg-gray-50 rounded-lg p-6 max-w-md mx-auto">
+                            <img src="/wolftü/wolftü.png" alt="Wolftü Premium Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-4">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">30 Günlük</h4>
+                            <p class="text-gray-600 mb-4">250₺</p>
+                            <div class="flex flex-col space-y-2 mb-4">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">250₺</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Wolftü Premium', '250₺')">Satın Al</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cs2" class="category-section bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="category-header">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">CS2 Premium Ürünleri</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Counter-Strike 2'de rakiplerinize üstünlük sağlayın</p>
+            </div>
+            <div class="space-y-8">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-2xl font-bold text-gray-900">CS2 Premium</h3>
+                            <span class="text-green-500 text-sm font-semibold animate-pulse">UNDETECTED/GÜNCEL</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/cs/csweekly.png" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Haftalık</h4>
+                            <p class="text-gray-600 mb-3">Tam erişim, 7 gün</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">410₺</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('CS2 Premium (Haftalık)', '410₺')">Satın Al</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/cs/csmonthly.png" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Aylık</h4>
+                            <p class="text-gray-600 mb-3">Tam erişim, 30 gün</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">820₺</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('CS2 Premium (Aylık)', '820₺')">Satın Al</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="zula" class="category-section bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="category-header">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Zula Ürünleri</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Zula'da üstün performans için premium çözümler</p>
+            </div>
+            <div class="space-y-8">
+                <!-- Zula Private -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-gradient-to-r from-purple-500 to-pink-500 private-product">
+                    <div class="p-6 border-b bg-gradient-to-r from-purple-600 to-pink-600 text-white private-content">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-2xl font-bold gradient-text">Zula Private</h3>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-yellow-300 text-sm font-semibold animate-pulse pulse-glow">ÖZEL HİLE</span>
+                                <span class="text-green-300 text-sm font-semibold animate-pulse">UNDETECTED/GÜNCEL</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 private-content">
+                        <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-6 max-w-md mx-auto border border-purple-200">
+                            <div class="text-center mb-4">
+                                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-3 crown-float pulse-glow">
+                                    <i class="fas fa-crown text-white text-2xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-2">Private Aylık</h4>
+                                <p class="text-gray-600 mb-2">Özel slot sistemi, 30 gün</p>
+                                <div class="inline-flex items-center bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 px-3 py-1 rounded-full border border-green-200 dark:border-green-700">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                                    <span class="text-sm font-semibold text-green-700 dark:text-green-300">Slot: (3/15)</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col space-y-2 mb-4">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                                <button class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1 rounded text-sm hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg private-button" onclick="showPrivateFeatures()">Özel Özellikler</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-purple-600">1000₺</span>
+                                <button class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg font-semibold private-button" onclick="showPayment('Zula Private (Aylık)', '1000₺')">Satın Al</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zula Legendware -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-2xl font-bold text-gray-900">Zula Legendware</h3>
+                            <span class="text-green-500 text-sm font-semibold animate-pulse">UNDETECTED/GÜNCEL</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/zula/1zula.png" alt="Zula Legendware Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Günlük</h4>
+                            <p class="text-gray-600 mb-3">Tam erişim, 1 gün</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">160₺</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Zula Legendware (Günlük)', '160₺')">Satın Al</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/zula/7zula.png" alt="Zula Legendware Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Haftalık</h4>
+                            <p class="text-gray-600 mb-3">Tam erişim, 7 gün</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">340₺</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Zula Legendware (Haftalık)', '340₺')">Satın Al</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/zula/14zula.png" alt="Zula Legendware Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">2 Hafta</h4>
+                            <p class="text-gray-600 mb-3">Tam erişim, 14 gün</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">540₺</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Zula Legendware (2 Hafta)', '540₺')">Satın Al</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/zula/30zula.png" alt="Zula Legendware Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Aylık</h4>
+                            <p class="text-gray-600 mb-3">Tam erişim, 30 gün</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">740₺</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Zula Legendware (Aylık)', '740₺')">Satın Al</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zula Titanware -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-2xl font-bold text-gray-900">Zula Titanware</h3>
+                            <span class="text-green-500 text-sm font-semibold animate-pulse">UNDETECTED/GÜNCEL</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/zula/7zula.png" alt="Zula Titanware Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Haftalık</h4>
+                            <p class="text-gray-600 mb-3">Tam erişim, 7 gün</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">400₺</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Zula Titanware (Haftalık)', '400₺')">Satın Al</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="/zula/30zula.png" alt="Zula Titanware Ürün Resmi" class="w-full h-32 object-cover rounded-lg mb-3">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Aylık</h4>
+                            <p class="text-gray-600 mb-3">Tam erişim, 30 gün</p>
+                            <div class="flex flex-col space-y-2 mb-3">
+                                <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700 transition-colors" onclick="showBanInfo()">Ban Durumu Nedir?</button>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-blue-600">640₺</span>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="showPayment('Zula Titanware (Aylık)', '640₺')">Satın Al</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="paymentModal" class="payment-modal">
+        <div class="payment-card">
+            <a href="https://t.me/byjudgeguvence" target="_blank" class="absolute top-4 right-14 text-xs bg-blue-50 text-blue-700 px-3 py-1 rounded-full border border-blue-200 hover:bg-blue-100">Güvence Kanalımız</a>
+            <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closePayment()"><i class="fas fa-times text-2xl"></i></button>
+            <h3 class="text-2xl font-bold mb-4">Havale/EFT Ödemesi</h3>
+            <div id="productInfo" class="mb-4 font-semibold"></div>
+            <div class="text-red-600 font-bold mb-4"><i class="fas fa-exclamation-triangle mr-2"></i>ÖNEMLİ: Açıklama kısmı zorunludur yazılmadığı sürece tarafımıza iletilmez!</div>
+            <div class="mb-6">
+                <strong>Ödeme Açıklaması:</strong>
+                <div class="flex items-center mt-2">
+                    <span class="text-xl font-bold">TAMİ7613912523622538</span>
+                    <button class="copy-btn ml-2" onclick="copyText('TAMİ7613912523622538')"><i class="fas fa-copy mr-1"></i> Kopyala</button>
+                </div>
+                <div class="text-sm text-gray-600 mt-1">
+                    <div class="flex items-center justify-between">
+                        <span><strong>Alıcı:</strong>Ad Soyad</span>
+                        <button class="copy-btn ml-2" onclick="copyText('Garanti Ödeme ve Elektronik Para Hizmetleri A.Ş.')"><i class="fas fa-copy mr-1"></i> Kopyala</button>
+                    </div>
+                </div>
+            </div>
+            <h4 class="text-lg font-bold mb-4">IBAN Numaraları</h4>
+            <div class="space-y-4">
+                <div class="bank-item"><div class="flex justify-between items-center"><strong>İban Numarası</strong><button class="copy-btn" onclick="copyText('TR10 0006 2000 9100 0006 9697 09')"><i class="fas fa-copy mr-1"></i> Kopyala</button></div><div class="text-lg font-mono">TR10 0006 2000 9100 0006 9697 09</div></div>
+            </div>
+            <p class="text-sm text-gray-600 mb-4 mt-6">Ödeme yaptıktan sonra lütfen ödeme tutarını ve sipariş bilgilerinizi <a href="https://t.me/byjudgee" target="_blank" class="text-blue-600 underline">@byjudgee</a>'ye bildirin.</p>
+            <a href="iletisim.html" class="block text-center w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-200">Ödeme Yaptım</a>
+        </div>
+    </div>
+
+    <!-- Ban Info Modal -->
+    <div id="banInfoModal" class="payment-modal">
+        <div class="payment-card">
+            <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeBanInfo()"><i class="fas fa-times text-2xl"></i></button>
+            <h3 class="text-2xl font-bold mb-4">Nasıl Ban Yerim? / Ban Durumu Nedir?</h3>
+            <div class="text-gray-700 mb-4">
+                <p class="mb-4">Sistem banını %100 bir şekilde engeller ve tek ban yeme ihtimaliniz belli ettiğiniz zaman yetkili kararı ile atılan bizim müdahele edemediğimiz bir ban olabilir. Başka türlü ban yeme şansınız %0.01</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bypass Features Modal -->
+    <div id="bypassFeaturesModal" class="payment-modal">
+        <div class="payment-card">
+            <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeBypassFeatures()"><i class="fas fa-times text-2xl"></i></button>
+            <h3 class="text-2xl font-bold mb-4">Diğer Hilelerden Farkı Ne?</h3>
+            <div class="text-gray-700 mb-4">
+                <p class="mb-4">Bypass sizi emulatör yani bilgisayar oyuncusu olmanıza rağmen mobil yani telefon oyuncularıyla karşılaştırır sizi bir mobil gibi gösterir ve sistem banından korur. Gönül rahatlığıyla bütün özellikleri kullanabilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Private Features Modal -->
+    <div id="privateFeaturesModal" class="payment-modal">
+        <div class="payment-card">
+            <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closePrivateFeatures()"><i class="fas fa-times text-2xl"></i></button>
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-4">
+                    <i class="fas fa-crown text-white text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Zula Private Özellikleri</h3>
+                <p class="text-gray-600 dark:text-gray-400">Premium slot sistemi ile güvenli deneyim</p>
+            </div>
+            <div class="text-gray-700 dark:text-gray-300 mb-4">
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 p-4 rounded-lg border border-purple-200 dark:border-purple-700 mb-4">
+                    <h4 class="font-bold text-purple-800 dark:text-purple-300 mb-2">🎯 Özel Slot Sistemi</h4>
+                    <p class="mb-3 text-gray-700 dark:text-gray-300">Hilemiz özel slot mantığı ile çalışır ve sadece 15 kişi tarafından kullanılabilir. Bu sınırlı erişim sayesinde %100 güvence sağlar.</p>
+                </div>
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 p-4 rounded-lg border border-green-200 dark:border-green-700 mb-4">
+                    <h4 class="font-bold text-green-800 dark:text-green-300 mb-2">🛡️ Maksimum Güvenlik</h4>
+                    <p class="mb-3 text-gray-700 dark:text-gray-300">Belli etmediğiniz sürece asla ban atmayan, yetkili banı dışında %100 bansız diyebileceğimiz ilk ve tek hile.</p>
+                </div>
+                <div class="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+                    <h4 class="font-bold text-blue-800 dark:text-blue-300 mb-2">⭐ Premium Deneyim</h4>
+                    <p class="text-gray-700 dark:text-gray-300">Özel tasarım ve gelişmiş algoritmalar ile en üst düzey performans garantisi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <img src="logo/logo2.jpg" alt="ByJudge Store Logo" class="w-8 h-8 rounded-lg object-cover" />
+                        <span class="text-xl font-bold">ByJudge Store</span>
+                    </div>
+                    <p class="text-gray-400 mb-4 max-w-md">Oyun deneyiminizi en üst seviyeye çıkarmak için premium dijital ürünler sunuyoruz.</p>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#pubg" class="hover:text-white transition-colors">PUBG Mobile</a></li>
+                        <li><a href="#valorant" class="hover:text-white transition-colors">Valorant</a></li>
+                        <li><a href="#wolftü" class="hover:text-white transition-colors">Wolftü Premium</a></li>
+                        <li><a href="#cs2" class="hover:text-white transition-colors">CS2 Premium</a></li>
+                        <li><a href="#zula" class="hover:text-white transition-colors">Zula</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Yardım</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="sss.html" class="flex items-center hover:text-white transition-colors">Sıkça Sorulan Sorular</a></li>
+                        <li><a href="https://t.me/byjudgeguvence" target="_blank" class="flex items-center hover:text-white transition-colors">Güvence Kanalımız</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">İletişim</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="https://t.me/byjudgee" target="_blank" class="flex items-center hover:text-white transition-colors">Telegram Hesabı (@byjudgee)</a></li>
+                        <li><a href="https://www.instagram.com/byjudge0?igsh=MXY1bXc3YWI0NnJvaQ==" target="_blank" class="flex items-center hover:text-white transition-colors">Instagram Hesabı (@byjudge0)</a></li>
+                        <li><a href="https://discord.com/users/853900519516143627" target="_blank" class="flex items-center hover:text-white transition-colors">Discord Hesabı (byjudge1903)</a></li>
+                        <li><a href="https://wa.me/message/EOQCSAYS2MQWB1" target="_blank" class="flex items-center hover:text-white transition-colors">WhatsApp Hesabı</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 ByJudge Store. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js" defer></script>
+    <script>
+        // API Base URL
+        const API_BASE = '/api';
+        
+        // User authentication state
+        let currentUser = null;
+
+        // Initialize user state
+        document.addEventListener('DOMContentLoaded', () => {
+            checkUserAuth();
+        });
+
+        // Check if user is authenticated
+        async function checkUserAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            
+            if (!token || !user) {
+                showAuthButtons();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/verify`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Invalid token');
+                }
+
+                const result = await response.json();
+                currentUser = result.user;
+                showUserMenu();
+                
+                // If user is admin, add admin link
+                if (currentUser.role === 'admin') {
+                    const userMenu = document.querySelector('#userMenu .dropdown-menu');
+                    const adminLink = document.createElement('a');
+                    adminLink.href = '/admin';
+                    adminLink.className = 'hover:text-blue-600';
+                    adminLink.innerHTML = '<i class="fas fa-cog mr-2"></i>Admin Panel';
+                    userMenu.insertBefore(adminLink, userMenu.firstChild);
+                }
+
+            } catch (error) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                showAuthButtons();
+            }
+        }
+
+        // Show authentication buttons
+        function showAuthButtons() {
+            document.getElementById('authButtons').classList.remove('hidden');
+            document.getElementById('userMenu').classList.add('hidden');
+        }
+
+        // Show user menu
+        function showUserMenu() {
+            document.getElementById('authButtons').classList.add('hidden');
+            document.getElementById('userMenu').classList.remove('hidden');
+            document.getElementById('userName').textContent = currentUser.username;
+        }
+
+        // Logout function
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#logoutLink')) {
+                e.preventDefault();
+                logout();
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            currentUser = null;
+            showAuthButtons();
+            window.location.reload();
+        }
+
+        // Enhanced payment function with order creation
+        async function showPayment(product, price) {
+            if (!currentUser) {
+                alert('Sipariş verebilmek için giriş yapmalısınız.');
+                window.location.href = '/login';
+                return;
+            }
+
+            selectedProduct = product;
+            selectedPrice = price;
+            document.getElementById('productInfo').innerHTML = `
+                <strong>Ürün:</strong> ${product} (${price})
+            `;
+            document.getElementById('paymentModal').style.display = 'block';
+        }
+
+        // Enhanced payment confirmation with order creation
+        async function handlePaymentConfirmation() {
+            if (!currentUser) {
+                alert('Sipariş verebilmek için giriş yapmalısınız.');
+                return;
+            }
+
+            try {
+                // Find product ID from product name (you might need to adjust this logic)
+                const productId = await findProductId(selectedProduct);
+                
+                if (!productId) {
+                    alert('Ürün bulunamadı. Lütfen tekrar deneyin.');
+                    return;
+                }
+
+                // Create order
+                const response = await fetch(`${API_BASE}/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: 1,
+                        payment_method: 'Bank Transfer',
+                        notes: `Ödeme açıklaması: TAMİ7613912523622538`
+                    })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(`Sipariş oluşturuldu! Sipariş numaranız: ${result.order.order_number}\n\nÖdeme yaptıktan sonra dekontunuzu yükleyebilirsiniz.`);
+                    closePayment();
+                    window.open('https://t.me/byjudgee', '_blank');
+                } else {
+                    const error = await response.json();
+                    alert(`Sipariş oluşturulamadı: ${error.error}`);
+                }
+
+            } catch (error) {
+                console.error('Sipariş oluşturma hatası:', error);
+                alert('Sipariş oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.');
+            }
+        }
+
+        // Helper function to find product ID
+        async function findProductId(productName) {
+            try {
+                const response = await fetch(`${API_BASE}/products`);
+                if (!response.ok) return null;
+                
+                const data = await response.json();
+                const product = data.products.find(p => p.name.includes(productName) || productName.includes(p.name));
+                return product ? product.id : null;
+            } catch (error) {
+                console.error('Ürün arama hatası:', error);
+                return null;
+            }
+        }
+
+        // Override the original payment functions
+        window.showPayment = showPayment;
+        window.handlePaymentConfirmation = handlePaymentConfirmation;
+    </script>
+</body>
+</html>
+
